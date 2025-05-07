@@ -1,24 +1,23 @@
-# 🏪 Sports Store Application (ASP.NET MVC + MySQL via XAMPP)
+# SportsStore ASP.NET Setup Guide (with MySQL via XAMPP)
 
-A simple ASP.NET MVC web application for managing and browsing sports store products. The application uses MySQL as the backend database, configured through XAMPP.
+## 📦 1. Extract the Project
 
-## 📦 Features
+- Download the ZIP from GitHub.
+- Extract it and open the folder in your ASP.NET IDE (e.g., Visual Studio).
 
-- Product listing and details
-- Cart functionality (remove, update, and checkout)
+## 🛠 2. Setup MySQL with XAMPP
 
-## 🛠️ Tech Stack
+- Open XAMPP and start **Apache** and **MySQL**.
+- Go to [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
+- Create a new database named `sportsstore`.
+- Import `sportsstore.sql` using the **Import** tab.
 
-- **Frontend**: HTML, CSS, Razor Views
-- **Backend**: ASP.NET MVC (C#)
-- **Database**: MySQL (via XAMPP)
-- **ORM**: Entity Framework
-- **IDE**: Visual Studio 2022
+## ⚙️ 3. Configure ASP.NET Connection
 
+- Open your `appsettings.json` or wherever your connection string is stored.
+- Update it like this:
 
-### Just Set Up the Database
-
-1. Launch XAMPP and start **Apache** and **MySQL**.
-2. Go to [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
-3. Create a new database named `sportsstore`.
-4. Import the provided SQL file (`sportsstore.sql`) located in the project folder.
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "server=localhost;user=root;password=;database=sportsstore;"
+}
