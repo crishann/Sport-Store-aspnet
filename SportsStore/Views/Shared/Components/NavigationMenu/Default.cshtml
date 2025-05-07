@@ -1,16 +1,53 @@
 ﻿@model IEnumerable<string>
 
-<div class="d-grid gap-2 mb-4">
-    <a class="btn btn-outline-primary @(ViewBag.SelectedCategory == null ? "active" : "")"
-       asp-action="List"
-       asp-controller="Product"
-       asp-route-category="">
-        Home
-    </a>
+    <style>
+        /* Side navigation container */
+        .side-nav {
+            background: linear-gradient(180deg, #1a043a, #4a0c84);
+            padding: 1rem;
+            border-radius: 12px;
+            color: #fff;
+            min-height: 100vh;
+        }
 
-    @foreach (string category in Model)
+            /* Navigation links */
+            .side-nav .nav-link {
+                background-color: transparent;
+                color: #e0e0e0;
+                border: 1px solid transparent;
+                border-radius: 8px;
+                padding: 0.75rem 1rem;
+                margin-bottom: 0.5rem;
+                transition: all 0.3s ease;
+                text-align: left;
+            }
+
+                /* Hover and active effects */
+                .side-nav .nav-link:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+                    color: #fff;
+                }
+
+                .side-nav .nav-link.active {
+                    background-color: #5c1bab;
+                    color: #facc15;
+                    border-color: #7e22ce;
+                    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+                }
+    </style>
+
+    <div class="side-nav d-flex flex-column">
+        <a class="nav-link @(ViewBag.SelectedCategory == null ? "active" : "")"
+           asp-action="List"
+           asp-controller="Product"
+           asp-route-category="">
+            Home
+        </a>
+
+        @foreach (string category in Model)
     {
-        <a class="btn btn-outline-primary @(category == ViewBag.SelectedCategory ? "active" : "")"
+        <a class="nav-link @(category == ViewBag.SelectedCategory ? "active" : "")"
            asp-action="List"
            asp-controller="Product"
            asp-route-category="@category"
@@ -18,4 +55,4 @@
             @category
         </a>
     }
-</div>
+    </div>

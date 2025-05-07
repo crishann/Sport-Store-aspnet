@@ -1,72 +1,148 @@
 ﻿@model CartIndexViewModel
 
-<div class="container">
+<style>
+    body {
+        background-color: #151321;
+        color: #f8f9fa;
+    }
+
+
+    .container, .table, .alert-info {
+        color: #f8f9fa; /* Ensures all text within the container, table, and alerts is white */
+    }
+
+        .table th, .table td {
+            color: #f8f9fa; /* Ensures table headings and cells have white text */
+        }
+
+    .alert-info {
+        color: #f8f9fa; /* Ensures alert text is white */
+    }
+
+    .btn-outline-light, .btn-purple {
+        color: #f8f9fa; /* Ensures buttons have white text */
+    }
+
+    .themed-table {
+        background-color: #1e1b29;
+        color: #ffffff;
+    }
+
+        .themed-table thead th {
+            background-color: #2a2143;
+            border-color: #3c2a5f;
+        }
+
+        .themed-table tbody td,
+        .themed-table tfoot td {
+            background-color: #1e1b29;
+            border-color: #2c2641;
+        }
+
+    .btn-purple {
+        background: linear-gradient(90deg, #4a0c84, #1a043a);
+        color: #fff;
+        border: none;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+
+        .btn-purple:hover {
+            background: linear-gradient(90deg, #5c1bab, #2a0a5e);
+            color: #facc15;
+        }
+
+    .btn-outline-light {
+        border-color: #a78bfa;
+        color: #e0e0e0;
+    }
+
+        .btn-outline-light:hover {
+            background-color: #6b21a8;
+            color: #fff;
+        }
+
+    .form-control-sm {
+        background-color: #2a2143;
+        border: 1px solid #4b367c;
+        color: #f8f9fa;
+    }
+
+    .alert-info {
+        background-color: #272143;
+        border-color: #6b21a8;
+        color: #f8f9fa;
+    }
+</style>
+
+<div class="container mt-4">
     <h2 class="mb-4">Your Cart</h2>
 
     @if (TempData["CartDebug"] != null)
     {
-        <div class="alert alert-info">
-            @TempData["CartDebug"]
-        </div>
+    <div class="alert alert-info">
+        @TempData["CartDebug"]
+    </div>
     }
 
     @if (Model.Cart.Lines.Count() > 0)
     {
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Quantity</th>
-                        <th>Item</th>
-                        <th class="text-end">Price</th>
-                        <th class="text-end">Subtotal</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var line in Model.Cart.Lines)
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped themed-table">
+            <thead>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Item</th>
+                    <th class="text-end">Price</th>
+                    <th class="text-end">Subtotal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.Cart.Lines)
                     {
-                        <tr>
-                            <td>
-                                <form asp-action="UpdateCart" method="post">
-                                    <input type="hidden" name="productId" value="@line.Product.ProductID" />
-                                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
-                                    <div class="input-group">
-                                        <input type="number" name="quantity" value="@line.Quantity" min="1" class="form-control form-control-sm" style="max-width: 70px;" />
-                                        <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
-                                    </div>
-                                </form>
-                            </td>
-                            <td>@line.Product.Name</td>
-                            <td class="text-end">₱@line.Product.Price.ToString("N2")</td>
-                            <td class="text-end">₱@((line.Quantity * line.Product.Price).ToString("N2"))</td>
-                            <td>
-                                <form asp-action="RemoveFromCart" method="post">
-                                    <input type="hidden" name="productId" value="@line.Product.ProductID" />
-                                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
-                                    <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-                                </form>
-                            </td>
-                        </tr>
+                <tr>
+                    <td>
+                        <form asp-action="UpdateCart" method="post">
+                            <input type="hidden" name="productId" value="@line.Product.ProductID" />
+                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                            <div class="input-group">
+                                <input type="number" name="quantity" value="@line.Quantity" min="1" class="form-control form-control-sm" style="max-width: 70px;" />
+                                <button type="submit" class="btn btn-sm btn-outline-light ms-1">Update</button>
+                            </div>
+                        </form>
+                    </td>
+                    <td>@line.Product.Name</td>
+                    <td class="text-end">₱@line.Product.Price.ToString("N2")</td>
+                    <td class="text-end">₱@((line.Quantity * line.Product.Price).ToString("N2"))</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" method="post">
+                            <input type="hidden" name="productId" value="@line.Product.ProductID" />
+                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
                     }
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-end">Total:</td>
-                        <td class="text-end"><strong>₱@Model.Cart.ComputeTotalValue().ToString("N2")</strong></td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end">Total:</td>
+                    <td class="text-end"><strong>₱@Model.Cart.ComputeTotalValue().ToString("N2")</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-        <div class="text-center mt-4">
-            <a class="btn btn-primary" href="@Model.ReturnUrl">Continue Shopping</a>
-            <a class="btn btn-success" asp-action="Checkout" asp-controller="Order">Checkout</a>
-        </div>
+    <div class="text-center mt-4">
+        <a class="btn btn-outline-light me-2" href="@Model.ReturnUrl">Continue Shopping</a>
+        <a class="btn btn-purple" asp-action="Checkout" asp-controller="Order">Checkout</a>
+    </div>
     }
     else
     {
-        <div class="alert alert-info">Your cart is empty. <a href="@Model.ReturnUrl">Continue Shopping</a></div>
+    <div class="alert alert-info">
+        Your cart is empty. <a class="text-warning" href="@Model.ReturnUrl">Continue Shopping</a>
+    </div>
     }
 </div>
